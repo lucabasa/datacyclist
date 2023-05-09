@@ -7,14 +7,12 @@ from typing import Dict, Union, Optional,Tuple
 #thanks to this script https://github.com/bunburya/fitness_tracker_data_parsing/blob/main/parse_fit.py
 
 POINTS_COLUMN_NAMES = ['latitude', 'longitude', 'lap', 'altitude', 'timestamp', 'heart_rate', 
-                       'cadence', 'speed', 'power', 'enhanced_speed', 'enhanced_altitude', 'temperature']
+                       'cadence', 'speed', 'power','temperature']
 
 # The names of the columns we will use in our laps DataFrame. 
 LAPS_COLUMN_NAMES = ['lap', 'start_time', 'total_distance', 'total_elapsed_time', 
                      'total_strokes', 'total_work', 'total_calories',
-                     'enhanced_avg_speed',
                      'avg_speed',
-                     'enhanced_max_speed',
                      'max_speed',
                      'avg_power',
                      'max_power',
