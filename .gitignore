@@ -133,4 +133,5 @@ dmypy.json
 .pyre/
 
 #other
+data/
 
