@@ -12,7 +12,7 @@ LICENSE = 'Apache 2.0'
 DOWNLOAD_URL = 'https://github.com/lucabasa/datacyclist'
 PROJECT_URLS = {
     #'Bug Tracker': ,
-    'Documentation': 'TBD',
+    #'Documentation': 'TBD',
     'Source Code': 'https://github.com/lucabasa/datacyclist'
 }
 VERSION = '0.0.1'
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     import sys
     if sys.version_info[:2] < (3, 7):
-        raise RuntimeError("tubesml requires python >= 3.7.")
+        raise RuntimeError("datacyclist requires python >= 3.7.")
 
     setup(
         name=DISTNAME,
