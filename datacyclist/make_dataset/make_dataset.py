@@ -7,22 +7,19 @@ from typing import Dict, Union, Optional,Tuple
 #thanks to this script https://github.com/bunburya/fitness_tracker_data_parsing/blob/main/parse_fit.py
 
 POINTS_COLUMN_NAMES = ['latitude', 'longitude', 'lap', 'altitude', 'timestamp', 'heart_rate', 
-                       'cadence', 'speed', 'power','temperature']
+                       'cadence', 'speed', 'power','temperature', 'left_power_phase', 'left_power_phase_peak']
 
 # The names of the columns we will use in our laps DataFrame. 
 LAPS_COLUMN_NAMES = ['lap', 'start_time', 'total_distance', 'total_elapsed_time', 
-                     'total_strokes', 'total_work', 'total_calories',
-                     'avg_speed',
-                     'max_speed',
-                     'avg_power',
-                     'max_power',
-                     'total_ascent',
-                     'total_descent',
-                     'avg_cadence',
-                     'max_cadence',
-                     'avg_temperature',
-                     'max_temperature',
-                     'normalized_power', 'max_heart_rate', 'avg_heart_rate']
+                     'total_strokes', 'total_work', 'total_calories', 'time_standing',
+                     'avg_speed', 'max_speed',
+                     'avg_power', 'max_power',
+                     'total_ascent', 'total_descent',
+                     'avg_cadence', 'max_cadence',
+                     'avg_temperature', 'max_temperature',
+                     'normalized_power', 
+                     'max_heart_rate', 'avg_heart_rate', 
+                     'avg_left_power_phase', 'avg_left_power_phase_peak']
 
 
 def get_fit_lap_data(frame: fitdecode.records.FitDataMessage) -> Dict[str, Union[float, datetime, timedelta, int]]:
