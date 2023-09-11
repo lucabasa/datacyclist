@@ -13,10 +13,10 @@ def create_data():
 
 df = create_data()
 
-
-def test_missing_columns():
+@pytest.mark.parametrize("col", ['timestamp', 'power', 'cadence', 'heart_rate'])
+def test_missing_columns(col):
     data = df.copy()
-    del data['power']
+    del data[col]
     with pytest.raises(KeyError):
         pc = dtc.PowerCurve()
         pc.calculate_curve(data)
