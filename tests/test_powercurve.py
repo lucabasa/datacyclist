@@ -74,4 +74,20 @@ def test_curve_calculation():
     assert pc.sec_10['activity_cadence'] == 1.5
     
     
+def test_curve_missing_seconds():
+    """
+    Test the behavior when a second is missing
+    We use forward fill
+    """
+    data = df.copy()
+    data.loc[data.index[3], data.columns] = np.nan
+    pc = dtc.PowerCurve()
+    pc.calculate_curve(df)
+    # Nothing should change
+    assert pc.sec_1['activity_best'] == 3
+    assert pc.sec_2['activity_best'] == 2.5
+    assert pc.sec_5['activity_best'] == 2.2
+    assert pc.sec_10['activity_best'] == 1.5
+    
+    
     
