@@ -48,7 +48,7 @@ class PowerCurve(object):
             setattr(self, f'sec_{sec}', PowerDict())
             
     def _rolling_avgs(self):
-        for sec in [sec for sec in self.sec_list if sec < self.data['time_elapsed'].max()]:
+        for sec in [sec for sec in self.sec_list if sec <= self.data['time_elapsed'].max()]:
             attr = getattr(self, f'sec_{sec}')
             attr['activity_best'] = 0
             attr['activity_HR'] = 0
@@ -71,7 +71,7 @@ class PowerCurve(object):
                 attr['alltime_cadence'] = attr['activity_cadence']
                 
     def _check_input(self, data):
-        diff = {'timestamp', 'power', 'cadence', 'heart_rate'} - set(data.columns)
+        diff = {'timestamp', 'power', 'cadence', 'heart_rate', 'time_elapsed'} - set(data.columns)
         if len(list(diff)) > 0:
             raise KeyError(f'These columns are missing in the data: {list(diff)}')
     

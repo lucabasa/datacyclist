@@ -5,15 +5,16 @@ import pytest
 
 
 def create_data():
-    df = pd.DataFrame({'timestamp': [1, np.nan, 5], 
-                       'power': [3, 2, 1], 
-                       'heart_rate': [1,1,1], 
-                       'cadence': [1, 2, 3] })
+    df = pd.DataFrame({'timestamp': pd.date_range(start="2023-01-01", periods=11, freq='S'),
+                       'time_elapsed': np.arange(0,11),
+                       'power': [0,0,1,1,1,1,2,2,2,2,3], 
+                       'heart_rate': [0,0,1,1,1,1,2,2,2,2,3], 
+                       'cadence': [0,0,1,1,1,1,2,2,2,2,3]})
     return df
 
 df = create_data()
 
-@pytest.mark.parametrize("col", ['timestamp', 'power', 'cadence', 'heart_rate'])
+@pytest.mark.parametrize("col", ['timestamp', 'power', 'cadence', 'heart_rate', 'time_elapsed'])
 def test_missing_columns(col):
     """
     Test if a KeyError is raised if any of the required columns is missing
@@ -51,3 +52,26 @@ def test_get_activity_curve():
     assert len(list(diff)) == 0
     assert res.shape[0] == 14  # the 14 time intervals of the curve
 
+
+    
+def test_curve_calculation():
+    """
+    Test the results are actually correct
+    """
+    pc = dtc.PowerCurve()
+    pc.calculate_curve(df)
+    assert pc.sec_1['activity_best'] == 3
+    assert pc.sec_2['activity_best'] == 2.5
+    assert pc.sec_5['activity_best'] == 2.2
+    assert pc.sec_10['activity_best'] == 1.5
+    assert pc.sec_1['activity_HR'] == 3
+    assert pc.sec_2['activity_HR'] == 2.5
+    assert pc.sec_5['activity_HR'] == 2.2
+    assert pc.sec_10['activity_HR'] == 1.5
+    assert pc.sec_1['activity_cadence'] == 3
+    assert pc.sec_2['activity_cadence'] == 2.5
+    assert pc.sec_5['activity_cadence'] == 2.2
+    assert pc.sec_10['activity_cadence'] == 1.5
+    
+    
+    
