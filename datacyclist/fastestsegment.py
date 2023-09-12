@@ -26,7 +26,7 @@ class FastestSegment():
         
         fastest_time = 100000000000000000000
         time_start = 0
-        time_end = 2
+        time_end = 0
         activity_no = 0
         
         for activity in self.data['activity_no'].unique():
@@ -46,19 +46,19 @@ class FastestSegment():
                     start = i
                     time_start = row['time_elapsed']
                     if self.km <= row['distance'] <= self.km * 1.1:
-
                         time_diff = row['time_diff']
 
                         if time_diff < fastest_time:
                             fastest_time = time_diff
                             activity_no = row['activity_no']
+                            time_end = time_start + time_diff
                         continue
                         
                     if row['activity_distance'] - row['distance_covered'] < self.km:
                         new_activity = True
                         continue
                         
-                    sec_data = act_data[(row['distance_covered'] + self.km < act_data['distance_covered']) & 
+                    sec_data = act_data[(row['distance_covered'] + self.km <= act_data['distance_covered']) & 
                                         (act_data['distance_covered'] <= row['distance_covered'] + self.km * 1.01)]
                     
                     time_diff = sec_data['time_elapsed'].min() - time_start
@@ -66,6 +66,7 @@ class FastestSegment():
                     if time_diff < fastest_time:
                         fastest_time = time_diff
                         activity_no = row['activity_no']
+                        time_end = sec_data['time_elapsed'].min()
         
         return fastest_time, time_start, time_end, activity_no
     
