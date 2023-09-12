@@ -11,6 +11,7 @@ class FastestSegment():
     def __init__(self, data, km):
         self.data = data
         self.km = km
+        self._check_data()
         
         
     def _check_data(self):
@@ -62,8 +63,8 @@ class FastestSegment():
         
         return fastest_time, time_start, time_end, activity_no
     
-    
-    def _best_by(self):
+    @staticmethod
+    def _best_by(x, self):
         best_time, _, _, best = self.find_window()
         if best_time == 100000000000000000000:
             best_time = np.nan
@@ -71,9 +72,9 @@ class FastestSegment():
         return best_time, best
 
 
-    def top_rides(self):
+    def top_rides(self, n=10):
         dates = self.data[['activity_no', 'year', 'month']].drop_duplicates()
-        res = self.data.groupby('activity_no').apply(self._best_by, self.km).reset_index()
+        res = self.data.groupby('activity_no').apply(self._best_by, self).reset_index()
         res[['time', 'activity_no']] = pd.DataFrame(res[0].tolist(), index=res.index)
         del res[0]
         res = res.dropna().sort_values(by='time').reset_index(drop=True)
@@ -85,7 +86,7 @@ class FastestSegment():
         by_month = pd.merge(by_month, res, on=['year', 'month', 'time'], how='left')
         by_month = by_month.sort_values(by=['activity_no']).reset_index(drop=True)
         
-        self.top10 = res.head(10)
+        self.top10 = res.head(n)
         self.by_month = by_month
 
         return self.top10, self.by_month

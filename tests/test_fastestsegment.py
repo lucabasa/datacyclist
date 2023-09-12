@@ -5,10 +5,11 @@ import pytest
 
 
 def create_data():
-    df = pd.DataFrame({'timestamp': [1, np.nan, 5], 
+    df = pd.DataFrame({'timestamp': [1, 2, 5], 
                        'activity_no': [3, 2, 1], 
                        'distance': [1,1,1], 
-                       'time_elapsed': [1, 2, 3], 
+                       'time_elapsed': [1, 2, 3],
+                       'time_diff': [0,1,2],
                        'activity_distance': [1,2,3], 
                        'distance_covered': [2,3,4], 
                        'year': [0,2,1], 
@@ -31,5 +32,9 @@ def test_missing_columns(col):
         pc.calculate_curve(data)
 
 
-def test_fastestsegment():
-    pass
+def test_toprides_io():
+    fs = dtc.FastestSegment(df, 1)
+    top10, monthly = fs.top_rides()
+    diff = {'time', 'activity_no', 'year', 'month'} - set(top10.columns)
+    assert len(list(diff)) == 0
+    #assert res.shape[0] == 14
