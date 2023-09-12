@@ -5,15 +5,14 @@ import pytest
 
 
 def create_data():
-    df = pd.DataFrame({'timestamp': [1, 2, 5], 
-                       'activity_no': [3, 2, 1], 
-                       'distance': [1,1,1], 
-                       'time_elapsed': [1, 2, 3],
-                       'time_diff': [0,1,2],
-                       'activity_distance': [1,2,3], 
-                       'distance_covered': [2,3,4], 
-                       'year': [0,2,1], 
-                       'month': [2,4,5] })
+    df = pd.DataFrame({'activity_no': [1, 1, 1, 1, 1, 1], 
+                       'distance': [0,5,5, 5, 5, 1], 
+                       'time_elapsed': [0, 1, 2, 3, 4, 5],
+                       'time_diff': [1,1,1, 1, 1, 1],
+                       'activity_distance': [21]*6, 
+                       'distance_covered': [0,5,10,15,20,21], 
+                       'year': [1,1,1, 1, 1, 1], 
+                       'month': [1,1,1 ,1, 1, 1] })
     return df
 
 df = create_data()
@@ -39,4 +38,13 @@ def test_toprides_io():
     assert len(list(diff)) == 0
     diff = {'time', 'activity_no', 'year', 'month'} - set(monthly.columns)
     assert len(list(diff)) == 0
-    #assert res.shape[0] == 14
+    
+
+def test_findwindow():
+    fs = dtc.FastestSegment(df, 20)
+    fastest_time, time_start, time_end, activity_no = fs.find_window()
+    assert fastest_time == 4
+    assert time_start == 1
+    assert time_end == 4  
+    assert activity_no == 1
+    
