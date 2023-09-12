@@ -18,5 +18,18 @@ def create_data():
 df = create_data()
 
 
+@pytest.mark.parametrize("col", ['activity_no', 'distance', 'time_diff', 'activity_distance', 
+                'time_elapsed', 'distance_covered', 'year', 'month'])
+def test_missing_columns(col):
+    """
+    Test if a KeyError is raised if any of the required columns is missing
+    """
+    data = df.copy()
+    del data[col]
+    with pytest.raises(KeyError):
+        pc = dtc.PowerCurve()
+        pc.calculate_curve(data)
+
+
 def test_fastestsegment():
     pass
