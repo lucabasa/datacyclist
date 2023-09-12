@@ -37,4 +37,6 @@ def test_toprides_io():
     top10, monthly = fs.top_rides()
     diff = {'time', 'activity_no', 'year', 'month'} - set(top10.columns)
     assert len(list(diff)) == 0
+    diff = {'time', 'activity_no', 'year', 'month'} - set(monthly.columns)
+    assert len(list(diff)) == 0
     #assert res.shape[0] == 14
