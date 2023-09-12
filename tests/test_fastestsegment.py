@@ -33,6 +33,9 @@ def test_missing_columns(col):
 
 
 def test_toprides_io():
+    """
+    Test if top_rides is returning a dataframe with the right columns
+    """
     fs = dtc.FastestSegment(df, 1)
     top10, monthly = fs.top_rides()
     diff = {'time', 'activity_no', 'year', 'month'} - set(top10.columns)
@@ -42,6 +45,9 @@ def test_toprides_io():
     
 
 def test_findwindow():
+    """
+    Test the find_window method, checking the numbers are as expected
+    """
     fs = dtc.FastestSegment(df, 20)
     fastest_time, time_start, time_end, activity_no = fs.find_window()
     assert fastest_time == 4
@@ -52,6 +58,9 @@ def test_findwindow():
     
 @patch("matplotlib.pyplot.show")
 def test_plot_bestrides(_):
+    """
+    Test if plot_best_rides works
+    """
     fs = dtc.FastestSegment(df, 20)
     _, _ = fs.top_rides()
     fs.plot_best_rides()
@@ -59,6 +68,9 @@ def test_plot_bestrides(_):
     
 @patch("matplotlib.pyplot.show")
 def test_plot_bestrides_norides(_):
+     """
+    Test if plot_best_rides works when best_rides has not been called already
+    """
     fs = dtc.FastestSegment(df, 20)
     fs.plot_best_rides()
     
