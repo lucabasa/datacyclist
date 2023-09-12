@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.gridspec import GridSpec
 import seaborn as sns
 from datacyclist.utils import plot_frame
 
@@ -50,11 +51,12 @@ class ActivityStats():
         if self.stat_dict['power'] == 1:
             self.power_zone = self.fig.add_subplot(gs[1, 2])
             self.power = self.fig.add_subplot(gs[4:6, :])
-            self.power_curve_pl = self.fig.add_subplot(gs[(6+
-                                                        2*self.stat_dict['heart_rate']+
-                                                        2*self.stat_dict['cadence']):(8
-                                                       +2*self.stat_dict['heart_rate']
-                                                       +2*self.stat_dict['cadence']), :2])
+            if self.power_curve is not None:
+                self.power_curve_pl = self.fig.add_subplot(gs[(6+
+                                                            2*self.stat_dict['heart_rate']+
+                                                            2*self.stat_dict['cadence']):(8
+                                                           +2*self.stat_dict['heart_rate']
+                                                           +2*self.stat_dict['cadence']), :2])
             self.power_dist = self.fig.add_subplot(gs[(6+
                                                         2*self.stat_dict['heart_rate']+
                                                         2*self.stat_dict['cadence']):(8
@@ -133,7 +135,7 @@ class ActivityStats():
             self.cadence.set_title('Cadence', fontsize=14, color='w')
             
     def _plot_power_curve(self):
-        if self.stat_dict['power'] == 1:
+        if self.stat_dict['power'] == 1 and self.power_curve is not None:
             self.power_curve.calculate_curve(self.data)
             b = self.power_curve.get_activity_curve()
             b['Best Curve'].plot(ax=self.power_curve_pl, label='Best Curve')
