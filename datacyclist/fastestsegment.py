@@ -12,6 +12,13 @@ class FastestSegment():
         self.data = data
         self.km = km
         
+        
+    def _check_data(self):
+        diff = {'activity_no', 'distance', 'time_diff', 'activity_distance', 
+                'time_elapsed', 'distance_covered', 'year', 'month'} - set(self.data.columns)
+        if len(list(diff)) > 0:
+            raise KeyError(f'These columns are missing in the data: {list(diff)}')
+        
     
     def find_window(self):
         
