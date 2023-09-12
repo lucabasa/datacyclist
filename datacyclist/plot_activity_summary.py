@@ -10,6 +10,7 @@ from datacyclist.utils import plot_frame
 class ActivityStats():
     def __init__(self, data, power_curve=None):
         self.data = data
+        self._check_data()
         self.power_curve = power_curve
         self.stat_dict = {'power': 0, 'heart_rate': 0, 'cadence': 0}
         self._update_dict()
@@ -25,6 +26,15 @@ class ActivityStats():
         self._plot_hrzone()
         self._plot_summary()
         plt.show()
+        
+        
+    def _check_data(self):
+        diff = {'power', 'heart_rate', 'cadence', 
+               'speed', 'longitude', 'latitude', 
+                'Power_Training_zone', 'HR_Training_zone', 
+                'distance_covered'} - set(self.data.columns)
+        if len(list(diff)) > 0:
+               raise KeyError(f'Missing columns required: {diff}')
                 
         
     def _update_dict(self):
