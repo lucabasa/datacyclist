@@ -6,6 +6,11 @@ from datacyclist.utils import plot_frame
 
 
 def plot_totals(data):
+    """
+    This function plots the total distance, average power, speed, and cadence per week.
+    
+    :param data: pd.DataFrame with distance, power, speed, and cadence data over time
+    """
     fig, ax = plt.subplots(4, 1, figsize=(15, 20), facecolor='#292525')
     fig.subplots_adjust(top=0.95)
     fig.suptitle(f' Analysis', fontsize=18, color='w')
@@ -29,6 +34,12 @@ def plot_totals(data):
 
     
 def plot_ratios(data):
+    """
+    This function plots a series of scatter plots of mean power, cadence, speed and heart rate per activity
+    For example, mean speed vs mean power
+    
+    :param data: pd.DataFrame with data of power, cadence, speed, and heart rate per activity
+    """
     fig, ax = plt.subplots(3, 2, figsize=(15, 15), facecolor='#292525')
     fig.subplots_adjust(top=0.95)
     fig.suptitle(f'Mean Ratios by activity', fontsize=18, color='w')

@@ -8,6 +8,30 @@ from datacyclist.utils import plot_frame
 
 
 class ActivityStats():
+    """
+    This class plots all the available stats of an activity when initialized
+    The basic plot is a plot of path and the speed (averaged over 10 seconds)
+    It also displays a summary of the ride in the form of a table
+    
+    If power data is available, it will be in a plot (averaged over 20 seconds). Moreover, it will plot
+    a pie chart with the time in each power zone, the power curve of this activity and of all time (if available),
+    and a histogram with the 25 Watts distribution. At last, the power data will be also in the summary table
+    
+    If heart rate data is available, it will be in a plot (averaged over 5 seconds). Moreover, it will plot
+    a pie chart with the time in each heart rate zone, and the data will be displayed in the summary table.
+    
+    If cadence data is available, it will be in a plot (averaged over 20 seconds). The data will be also
+    displayed in the summary table.
+    
+    The size of the plot is dynamic, depending on the available data
+    
+    :param data: pd.Dataframe with columns `power`, `heart_rate`, `cadence`, 
+               `speed`, `longitude`, `latitude`, 
+                `Power_Training_zone`, `HR_Training_zone`, 
+                `distance_covered`.
+                
+    :param power_curve: PowerCurve object, if provided and power data is present, it will be plotted.
+    """
     def __init__(self, data, power_curve=None):
         self.data = data
         self._check_data()
