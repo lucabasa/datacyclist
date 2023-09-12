@@ -28,8 +28,7 @@ def test_missing_columns(col):
     data = df.copy()
     del data[col]
     with pytest.raises(KeyError):
-        pc = dtc.PowerCurve()
-        pc.calculate_curve(data)
+        pc = dtc.FastestSegment(data, 1)
 
 
 def test_toprides_io():
