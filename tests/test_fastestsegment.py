@@ -43,7 +43,7 @@ def test_toprides_io():
     diff = {'time', 'activity_no', 'year', 'month'} - set(monthly.columns)
     assert len(list(diff)) == 0
     
-
+    
 def test_findwindow():
     """
     Test the find_window method, checking the numbers are as expected
@@ -68,7 +68,7 @@ def test_plot_bestrides(_):
     
 @patch("matplotlib.pyplot.show")
 def test_plot_bestrides_norides(_):
-     """
+    """
     Test if plot_best_rides works when best_rides has not been called already
     """
     fs = dtc.FastestSegment(df, 20)
