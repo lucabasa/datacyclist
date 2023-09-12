@@ -127,8 +127,6 @@ class PowerCurve(object):
         This method adds columns to the input data according to the power curve attributes
         It finds the activity FTP and it updates the FTP of the rider if the value improved
         """
-        # todo: this method only looks for improvements in FTP, we can use the threshold HR to find decreases in FTP
-        # as in: same threshold HR, lower 20 minutes power
         for sec in [1200, 3600]:
             attr = getattr(self, f'sec_{sec}')
             data[f'{int(sec / 60)}min_activity_power'] = np.where(attr['activity_best'] == 0, np.nan, attr['activity_best'])
@@ -146,8 +144,28 @@ class PowerCurve(object):
         
         data['FTP_change'] = np.where(data['FTP'] == data['activity_FTP'], 1, 0)
         
-        data['Threshold_HR'] = np.where(data['FTP_change'] == 1, data['20min_activity_HR'], data['20min_HR'])
+        data['Threshold_HR'] = np.where(data['FTP_change'] == 1, 
+                                        np.where(data['60min_activity_HR'].isna(), 
+                                                 data['20min_activity_HR'] * 0.95,
+                                                 np.where(data['20min_activity_power'] * 0.95 >= data['60min_activity_power'], 
+                                                          data['20min_activity_HR'] *0.95, data['60min_activity_HR'])),
+                                       data['20min_HR']*0.95)
         
         del data['activity_FTP']
+        
+        data.loc[(data['FTP_change'] == 0) & 
+                 ((data['Threshold_HR'] * 0.98 < data['20min_activity_HR'] *0.95) | 
+                  (data['Threshold_HR'] * 0.98 < data['60min_activity_HR'])), 'FLAG'] = 1
+        data.loc[data['FLAG'] == 1, 'FTP_change'] = 1
+        data.loc[data['FLAG'] == 1, 'FTP'] = np.where(data['60min_activity_power'].isna(),
+                                                      data['20min_activity_power'] * 0.95,
+                                                      np.where(data['20min_activity_power'] * 0.95 >= data['60min_activity_power'], 
+                                                               data['20min_activity_power'] * 0.95, 
+                                                               data['60min_activity_power']))
+#         data.loc[data['FLAG'] == 1, 'Threshold_HR'] = np.where(data['20min_activity_power'] * 0.95 >= data['60min_activity_power'],
+#                                                                data['20min_activity_HR'] * 0.95, 
+#                                                                data['60min_activity_HR'])
+        
+        del data['FLAG']
         
         return data

@@ -89,5 +89,33 @@ def test_curve_missing_seconds():
     assert pc.sec_5['activity_best'] == 2.2
     assert pc.sec_10['activity_best'] == 1.5
     
+
+def test_ftp():
+    df = pd.DataFrame({'timestamp': ['2023-01-01 00:00:00', '2023-01-01 00:20:00', '2023-01-01 01:00:00'],
+                   'time_elapsed': [0, 1200, 3600],
+                   'power': [200, 200, 300], 
+                   'heart_rate': [150, 150, 180], 
+                   'cadence': [80, 80, 80]})
+
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    pc = dtc.PowerCurve()
+    pc.calculate_curve(df)
+    pc.get_ftp(df)
     
+    assert df['FTP_change'].unique()[0] == 1
+    assert round(df['FTP'].unique()[0], 0) == 200
+    assert round(df['Threshold_HR'].unique()[0], 0) == 150
     
+    df['power'] = 300
+    pc.calculate_curve(df)
+    pc.get_ftp(df)
+    assert df['FTP_change'].unique()[0] == 1
+    assert round(df['FTP'].unique()[0], 0) == 300
+    assert round(df['Threshold_HR'].unique()[0], 0) == 150
+    
+    df['power'] = 100
+    pc.calculate_curve(df)
+    pc.get_ftp(df)
+    assert df['FTP_change'].unique()[0] == 1
+    assert round(df['FTP'].unique()[0], 0) == 100
+    assert round(df['Threshold_HR'].unique()[0], 1) == 142.5  #in this case it takes the 20 min power and HR
