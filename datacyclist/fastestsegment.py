@@ -33,12 +33,16 @@ class FastestSegment():
             
             act_data = self.data[self.data['activity_no'] == activity].copy()
             
+            new_activity = False
+            
             if act_data['distance'].sum() < self.km:
                 continue
                 
             else:
         
                 for i, row in act_data.iterrows():
+                    if new_activity:
+                        break
                     start = i
                     time_start = row['time_elapsed']
                     if self.km <= row['distance'] <= self.km * 1.1:
@@ -51,6 +55,7 @@ class FastestSegment():
                         continue
                         
                     if row['activity_distance'] - row['distance_covered'] < self.km:
+                        new_activity = True
                         continue
                         
                     sec_data = act_data[(row['distance_covered'] + self.km < act_data['distance_covered']) & 
