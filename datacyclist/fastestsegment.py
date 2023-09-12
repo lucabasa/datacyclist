@@ -100,7 +100,7 @@ class FastestSegment():
 
 
     def plot_best_rides(self):
-        if hasattr(self, 'top10') and hasattr(self.by_month):
+        if hasattr(self, 'top10') and hasattr(self, 'by_month'):
             fig, ax = plt.subplots(1, 2, figsize=(15, 6), facecolor='#292525')
             fig.suptitle(f'Best rides of {int(self.km/1000)} Km', fontsize=18, color='w')
             (self.top10.sort_values(by='activity_no').set_index(['year', 'month'])['time'] / 3600).plot(ax=ax[0], color='#46a832')
@@ -113,5 +113,5 @@ class FastestSegment():
             ax[1].set_title('Best ride by month', color='w', fontsize=14)
             plt.show()
         else:
-            self.top_rides()
+            _, _ = self.top_rides()
             self.plot_best_rides()
