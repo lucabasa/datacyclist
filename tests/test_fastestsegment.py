@@ -2,6 +2,7 @@ import datacyclist as dtc
 import pandas as pd
 import numpy as np
 import pytest
+from unittest.mock import patch
 
 
 def create_data():
@@ -47,4 +48,17 @@ def test_findwindow():
     assert time_start == 1
     assert time_end == 4  
     assert activity_no == 1
+    
+    
+@patch("matplotlib.pyplot.show")
+def test_plot_bestrides(_):
+    fs = dtc.FastestSegment(df, 20)
+    _, _ = fs.top_rides()
+    fs.plot_best_rides()
+    
+    
+@patch("matplotlib.pyplot.show")
+def test_plot_bestrides_norides(_):
+    fs = dtc.FastestSegment(df, 20)
+    fs.plot_best_rides()
     
