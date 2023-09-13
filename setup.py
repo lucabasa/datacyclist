@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 DESCRIPTION = "datacyclist, a package to analyze cycling data."
-with open('README.md') as f:
+with open('README.rst') as f:
     LONG_DESCRIPTION = f.read()
 
 DISTNAME = 'datacyclist'
