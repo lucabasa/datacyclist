@@ -43,6 +43,18 @@ def test_toprides_io():
     assert len(list(diff)) == 0
     
     
+def test_toprides():
+    """
+    Test it returns the right values
+    """
+    tmp = df.copy()
+    tmp['activity_no'] = 2
+    tmp = pd.concat([df, tmp], ignore_index=True)
+    fs = dtc.FastestSegment(tmp, 1)
+    top10, monthly = fs.top_rides()
+    assert top10['activity_no'].nunique() == 2
+    
+    
 def test_findwindow():
     """
     Test the find_window method, checking the numbers are as expected
