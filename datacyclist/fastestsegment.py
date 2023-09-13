@@ -35,7 +35,7 @@ class FastestSegment():
             raise KeyError(f'These columns are missing in the data: {list(diff)}')
         
     
-    def find_window(self):
+    def find_window(self, data=None):
         """
         This method scans each activity to find the best segment of a given distance (the attribute km).
         
@@ -49,9 +49,11 @@ class FastestSegment():
         time_end = 0
         activity_no = 0
         
-        for activity in self.data['activity_no'].unique(): # each activity can only return 1 segment at best
-            
-            act_data = self.data[self.data['activity_no'] == activity].copy()
+        if data is None:
+            data = self.data
+        
+        for activity in data['activity_no'].unique(): # each activity can only return 1 segment at best
+            act_data = data[data['activity_no'] == activity].copy()
             
             new_activity = False # this will be used to break the activity loop if we can't find any other segment
             
@@ -96,7 +98,7 @@ class FastestSegment():
     
     @staticmethod
     def _best_by(x, self):
-        best_time, _, _, best = self.find_window()
+        best_time, _, _, best = self.find_window(data=x)
         if best_time == 100000000000000000000:
             best_time = np.nan
             best = np.nan
@@ -112,7 +114,7 @@ class FastestSegment():
         :return top10: attribute populated in this method, the top results in the data, from best to worst
         :return by_month: attribute populated in this method, the best result by month, ordered by activity number
         """
-        dates = self.data[['activity_no', 'year', 'month']].drop_duplicates()
+        dates = self.data[['activity_no', 'year', 'month']].drop_duplicates()               
         res = self.data.groupby('activity_no').apply(self._best_by, self).reset_index()
         res[['time', 'activity_no']] = pd.DataFrame(res[0].tolist(), index=res.index)
         del res[0]
