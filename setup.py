@@ -12,7 +12,7 @@ LICENSE = 'Apache 2.0'
 DOWNLOAD_URL = 'https://github.com/lucabasa/datacyclist'
 PROJECT_URLS = {
     #'Bug Tracker': ,
-    #'Documentation': 'TBD',
+    'Documentation': 'https://datacyclist.readthedocs.io/',
     'Source Code': 'https://github.com/lucabasa/datacyclist'
 }
 VERSION = '0.2.0'
