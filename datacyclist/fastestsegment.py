@@ -39,6 +39,9 @@ class FastestSegment():
         """
         This method scans each activity to find the best segment of a given distance (the attribute km).
         
+        :param data: (optional), a pandas dataframe with the data we want to scan for the best segment.
+                            If None, it will use the attribute `data` from the class.
+        
         :return fastest_time: the fastest elapsed time for the distance specified by `self.km`
         :return time_start: how many seconds into the ride the segment starts
         :return time_end: how many seconds into the ride the segment ends
