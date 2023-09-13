@@ -15,7 +15,7 @@ PROJECT_URLS = {
     #'Documentation': 'TBD',
     'Source Code': 'https://github.com/lucabasa/datacyclist'
 }
-VERSION = '0.1.0'
+VERSION = '0.2.0'
 PYTHON_REQUIRES = ">=3.7"
 
 INSTALL_REQUIRES = [

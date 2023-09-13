@@ -28,8 +28,7 @@ def test_missing_columns(col):
     data = df.copy()
     del data[col]
     with pytest.raises(KeyError):
-        pc = dtc.PowerCurve()
-        pc.calculate_curve(data)
+        pc = dtc.FastestSegment(data, 1)
 
 
 def test_toprides_io():
@@ -42,6 +41,18 @@ def test_toprides_io():
     assert len(list(diff)) == 0
     diff = {'time', 'activity_no', 'year', 'month'} - set(monthly.columns)
     assert len(list(diff)) == 0
+    
+    
+def test_toprides():
+    """
+    Test it returns the right values
+    """
+    tmp = df.copy()
+    tmp['activity_no'] = 2
+    tmp = pd.concat([df, tmp], ignore_index=True)
+    fs = dtc.FastestSegment(tmp, 1)
+    top10, monthly = fs.top_rides()
+    assert top10['activity_no'].nunique() == 2
     
     
 def test_findwindow():
